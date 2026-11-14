@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 QUESTIONS_FILE = BASE_DIR / "questions.json"
 ANSWERS_FILE = BASE_DIR / "answers.jsonl"
-RESULTS_FILE = BASE_DIR / "results.csv"
+RESULTS_FILE = BASE_DIR / "results_final.csv"
 
 # --------------------------------------------------
 # LOAD QUESTIONS
@@ -90,11 +90,23 @@ def keyword_match(answer, keys):
 
     text = answer.lower()
 
+    def matches(alternative):
+        alternative = alternative.strip().lower()
+
+        # Numeric answers must match as standalone values,
+        # not as digits inside citations or other numbers.
+        if re.fullmatch(r"\d+(?:\.\d+)?", alternative):
+            pattern = (
+                r"(?<![a-z0-9_.])"
+                + re.escape(alternative)
+                + r"(?![a-z0-9_.])"
+            )
+            return bool(re.search(pattern, text))
+
+        return alternative in text
+
     return all(
-        any(
-            alternative.lower() in text
-            for alternative in group
-        )
+        any(matches(alternative) for alternative in group)
         for group in keys
     )
 
@@ -131,6 +143,18 @@ show_details = "--show" in sys.argv
 for row in rows:
 
     request_id = row.get("request_id")
+
+    # Operational failures are not answer-quality outcomes.
+    status = row.get("status", "")
+    if status in {"admission_timeout", "rate_limited", "timeout", "error"}:
+        if status == "admission_timeout":
+            row["status"] = "timeout"
+
+        row["answer_type"] = "not_evaluated"
+        row["answer_grade"] = "not_evaluated"
+        row["retrieval_hit"] = ""
+        continue
+
     answer_data = answers.get(request_id)
 
     if not answer_data:
@@ -232,25 +256,34 @@ for row in rows:
 # SAVE UPDATED RESULTS
 # --------------------------------------------------
 
-fields = list(rows[0].keys())
-
-for field in (
-    "answer_type",
+# Required benchmark CSV schema (exactly 12 columns).
+fields = [
+    "request_id",
+    "scenario",
+    "source",
+    "start_time",
+    "first_token_ms",
+    "total_ms",
+    "status",
+    "retries",
+    "tokens_in",
+    "tokens_out",
+    "retrieval_setting",
     "answer_grade",
-    "retrieval_hit",
-):
-    if field not in fields:
-        fields.append(field)
+]
 
-with open(RESULTS_FILE, "w", newline="", encoding="utf-8") as f:
+temp_file = RESULTS_FILE.with_name(RESULTS_FILE.name + ".tmp")
 
+with open(temp_file, "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(
         f,
-        fieldnames=fields
+        fieldnames=fields,
+        extrasaction="ignore"
     )
-
     writer.writeheader()
     writer.writerows(rows)
+
+temp_file.replace(RESULTS_FILE)
 
 
 # --------------------------------------------------
@@ -298,5 +331,5 @@ else:
 
 print(f"Total benchmark rows: {len(rows)}")
 
-print("\nUpdated results.csv")
+print("\nUpdated results_final.csv")
 print("=" * 55)

@@ -84,10 +84,15 @@
     "answerable": true,
     "keys": [
       [
-        "text"
+        "text tokens",
+        "text stream"
+      ],
+      [
+        "audio tokens",
+        "audio stream"
       ]
     ],
-    "note": "VERIFY; make key stricter"
+    "note": "Strict keyword groups; citation also required"
   },
   {
     "id": "a9",
@@ -95,10 +100,17 @@
     "answerable": true,
     "keys": [
       [
-        "7"
+        "7b",
+        "7 billion"
+      ],
+      [
+        "helium"
+      ],
+      [
+        "parameter"
       ]
     ],
-    "note": "VERIFY"
+    "note": "Strict keyword groups; citation also required"
   },
   {
     "id": "a10",
@@ -120,10 +132,23 @@
     "answerable": true,
     "keys": [
       [
-        "smooth"
+        "exponential moving average",
+        "ema"
+      ],
+      [
+        "low confidence",
+        "confidence scores"
+      ],
+      [
+        "previous chunks",
+        "information from previous chunks"
+      ],
+      [
+        "backpropagation",
+        "differentiable boundary learning"
       ]
     ],
-    "note": "WRITE a stricter key after reading"
+    "note": "Strict answer-content validation; citation required"
   },
   {
     "id": "a12",
@@ -131,10 +156,13 @@
     "answerable": true,
     "keys": [
       [
-        "byte"
+        "raw byte",
+        "byte-level",
+        "byte sequences",
+        "bytes directly"
       ]
     ],
-    "note": "VERIFY"
+    "note": "Requires explicit raw-byte or byte-level claim"
   },
   {
     "id": "a13",
@@ -142,10 +170,19 @@
     "answerable": true,
     "keys": [
       [
-        "path"
+        "o(1)",
+        "constant number of sequential operations"
+      ],
+      [
+        "o(n)",
+        "n sequential operations"
+      ],
+      [
+        "self-attention connects all positions",
+        "self-attention layer connects all positions"
       ]
     ],
-    "note": "VERIFY (Sec 4)"
+    "note": "Strict answer-content validation; citation required"
   },
   {
     "id": "u1",

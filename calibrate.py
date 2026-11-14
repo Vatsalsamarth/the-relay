@@ -69,6 +69,9 @@ cfg = {
 }
 
 # Copy observed rate limits from successful responses.
+# Groq headers: requests = requests per day (RPD);
+# tokens = tokens per minute (TPM).
+# RPM and TPD are not inferred from these two headers.
 lim = next(
     (r["hdr"] for r in ok if r.get("hdr")),
     {}

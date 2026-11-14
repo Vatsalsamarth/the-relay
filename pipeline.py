@@ -231,13 +231,21 @@ async def call_llm(
             + kw.get("max_tokens", 300)
         )
 
-        wait_ms, reservation = await g.acquire(
-            est,
-            min(
-                deadline,
-                acquire_deadline or deadline
+        wait_started = time.perf_counter()
+
+        try:
+            wait_ms, reservation = await g.acquire(
+                est,
+                min(
+                    deadline,
+                    acquire_deadline or deadline
+                )
             )
-        )
+        except Giveup:
+            ctx.wait += (
+                time.perf_counter() - wait_started
+            ) * 1000
+            raise
 
         ctx.wait += wait_ms
 

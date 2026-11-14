@@ -4,7 +4,7 @@ import argparse, asyncio, csv, json, os, random, time
 import httpx, llm, pipeline, retrieval
 from pipeline import Cfg, Governor
 
-COLS = "request_id,scenario,source,start_time,first_token_ms,total_ms,status,retries,tokens_in,tokens_out,retrieval_setting,answer_grade,mode".split(",")
+COLS = "request_id,scenario,source,start_time,first_token_ms,total_ms,status,retries,tokens_in,tokens_out,retrieval_setting,answer_grade".split(",")
 
 def arrivals(kind, n, rate, duration):
     if kind == "steady": return sorted(random.uniform(0, n / rate * 60) for _ in range(n))               # ~uniform at `rate`/min
@@ -36,13 +36,14 @@ async def main():
         row = dict(request_id=f"{o.scenario}-{i}", scenario=o.scenario, source=o.source, start_time=round(st - t_run, 3),
                    first_token_ms=round(ft, 1) if ft else "", total_ms=round(r["total_ms"], 1),
                    status="timeout" if given_up else r["status"], retries=r["retries"], tokens_in=r["tokens_in"], tokens_out=r["tokens_out"],
-                   retrieval_setting=o.setting, answer_grade="", mode=r["mode"])
+                   retrieval_setting=o.setting, answer_grade="")
         rows.append(row); answers.append({"request_id": row["request_id"], "qid": q["id"], "answer": r["answer"], "refused": r["refused"],
-                                          "wait_ms": r["wait_ms"], "work_ms": r["work_ms"], "retry_ms": r["retry_ms"], "events": r["events"], "peak_queue": g.peak_queue})
+                                          "wait_ms": r["wait_ms"], "work_ms": r["work_ms"], "retry_ms": r["retry_ms"], "events": r["events"], "peak_queue": g.peak_queue,
+                                          "mode": r.get("mode")})
     await asyncio.gather(*(one(i, off) for i, off in enumerate(offs)))
     dur = time.time() - t_run
-    new = not os.path.exists("results.csv")
-    with open("results.csv", "a", newline="") as f:
+    new = not os.path.exists("results_final.csv")
+    with open("results_final.csv", "a", newline="") as f:
         w = csv.DictWriter(f, COLS); new and w.writeheader(); w.writerows(rows)
     with open("answers.jsonl", "a") as f:
         for x in answers: f.write(json.dumps(x) + "\n")
