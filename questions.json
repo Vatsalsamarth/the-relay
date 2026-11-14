@@ -1,0 +1,185 @@
+[
+  {
+    "id": "a1",
+    "q": "How many identical layers does the base Transformer encoder have?",
+    "answerable": true,
+    "keys": [
+      [
+        "6",
+        "six"
+      ]
+    ],
+    "note": "VERIFY vs paper (Sec 3.1)"
+  },
+  {
+    "id": "a2",
+    "q": "What BLEU did the big Transformer get on WMT 2014 English-to-German?",
+    "answerable": true,
+    "keys": [
+      [
+        "28.4"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a3",
+    "q": "What is d_model in the base Transformer?",
+    "answerable": true,
+    "keys": [
+      [
+        "512"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a4",
+    "q": "How many attention heads does the base Transformer use?",
+    "answerable": true,
+    "keys": [
+      [
+        "8",
+        "eight"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a5",
+    "q": "What warmup_steps value was used for the Adam learning rate schedule?",
+    "answerable": true,
+    "keys": [
+      [
+        "4000"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a6",
+    "q": "What is the theoretical latency of Moshi?",
+    "answerable": true,
+    "keys": [
+      [
+        "160"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a7",
+    "q": "What frame rate does the Mimi codec operate at?",
+    "answerable": true,
+    "keys": [
+      [
+        "12.5"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a8",
+    "q": "What is Moshi's 'Inner Monologue'?",
+    "answerable": true,
+    "keys": [
+      [
+        "text"
+      ]
+    ],
+    "note": "VERIFY; make key stricter"
+  },
+  {
+    "id": "a9",
+    "q": "What does the Helium model in Moshi have as its parameter count?",
+    "answerable": true,
+    "keys": [
+      [
+        "7"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a10",
+    "q": "What are the two main components that dynamic chunking adds to a hierarchical sequence model?",
+    "answerable": true,
+    "keys": [
+      [
+        "routing"
+      ],
+      [
+        "downsampler"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a11",
+    "q": "What does the smoothing module do in the dynamic chunking paper?",
+    "answerable": true,
+    "keys": [
+      [
+        "smooth"
+      ]
+    ],
+    "note": "WRITE a stricter key after reading"
+  },
+  {
+    "id": "a12",
+    "q": "What input does the dynamic chunking model operate on directly, instead of a tokenizer?",
+    "answerable": true,
+    "keys": [
+      [
+        "byte"
+      ]
+    ],
+    "note": "VERIFY"
+  },
+  {
+    "id": "a13",
+    "q": "Why does self-attention have a shorter maximum path length than recurrent layers?",
+    "answerable": true,
+    "keys": [
+      [
+        "path"
+      ]
+    ],
+    "note": "VERIFY (Sec 4)"
+  },
+  {
+    "id": "u1",
+    "q": "How many parameters does GPT-4 have?",
+    "answerable": false,
+    "keys": [],
+    "note": "out of library"
+  },
+  {
+    "id": "u2",
+    "q": "Does Moshi support Hindi?",
+    "answerable": false,
+    "keys": [],
+    "note": "VERIFY the paper really does not say"
+  },
+  {
+    "id": "u3",
+    "q": "What BLEU did the Transformer get on English-to-Romanian translation?",
+    "answerable": false,
+    "keys": [],
+    "note": "VERIFY not in v7"
+  },
+  {
+    "id": "u4",
+    "q": "What is the GPU memory footprint of Moshi at inference?",
+    "answerable": false,
+    "keys": [],
+    "note": "VERIFY"
+  },
+  {
+    "id": "u5",
+    "q": "What learning rate did the dynamic chunking paper use for its 3-stage hierarchy on Chinese text?",
+    "answerable": false,
+    "keys": [],
+    "note": "trap: plausible but unlikely; VERIFY"
+  }
+]
